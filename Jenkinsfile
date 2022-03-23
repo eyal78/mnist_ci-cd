@@ -2,9 +2,9 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = ''
-    ECR_REGION = ''
-    K8S_NAMESPACE = ''
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/eyal-ecr'
+    ECR_REGION = 'eu-north-1'
+    K8S_NAMESPACE = 'eyal'
   }
 
   stages {
@@ -47,14 +47,11 @@ pipeline {
             sh '''
             cd infra/k8s
             IMG_NAME=mnist-predictor:0.0.${BUILD_NUMBER}
-
             # replace registry url and image name placeholders in yaml
             sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
             sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
-
             # get kubeconfig creds
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
-
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
             '''
@@ -62,4 +59,3 @@ pipeline {
     }
   }
 }
-
