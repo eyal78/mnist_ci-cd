@@ -311,7 +311,7 @@
 
 @media screen and (min-width: 1024px) {
   .form-control.webcam-on {
-    top: 16vh;
+    top: 15vh;
     left: 8vw;
   }
 }
