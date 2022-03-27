@@ -31,7 +31,7 @@ pipeline {
         when { branch "main" }
         steps {
             sh '''
-            IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
+            IMAGE="mnist-predictor:0.0.1"
             cd ml_model
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} .
