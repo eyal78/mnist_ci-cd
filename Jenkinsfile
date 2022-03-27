@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = '352708296901.dkr.ecr.us-east-2.amazonaws.com/devops-project'
-    ECR_REGION = 'us-east-2'
+    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com/devops_groups_nde_ecr'
+    ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
   }
 
