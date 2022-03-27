@@ -51,7 +51,7 @@ pipeline {
             sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
             sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-predictor.yaml
             sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
-            # get kubeconfig creds
+            # get kubeconfig creds (k8s auth)
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
