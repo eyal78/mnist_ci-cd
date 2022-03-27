@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com/devops_groups_nde_ecr'
+    REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/flask-app-alonit'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
   }
@@ -33,7 +33,7 @@ pipeline {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
             cd ml_model
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin 352708296901.dkr.ecr.eu-north-1.amazonaws.com
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} .
             docker tag ${IMAGE} ${REGISTRY_URL}/${IMAGE}
             docker push ${REGISTRY_URL}/${IMAGE}
