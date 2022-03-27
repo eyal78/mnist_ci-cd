@@ -4,7 +4,7 @@ pipeline {
   environment {
     REGISTRY_URL = 'public.ecr.aws/r7m7o9d4/eyal-ecr'
     ECR_REGION = 'eu-north-1'
-    K8S_NAMESPACE = 'eyal'
+    K8S_NAMESPACE = 'devops-groups-nde'
   }
 
   stages {
