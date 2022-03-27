@@ -49,6 +49,7 @@ pipeline {
             IMG_NAME=mnist-predictor:0.0.${BUILD_NUMBER}
             # replace registry url and image name placeholders in yaml
             sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-predictor.yaml
+            sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-predictor.yaml
             sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-predictor.yaml
             # get kubeconfig creds
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
