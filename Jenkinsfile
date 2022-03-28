@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com/mnist-predictor'
+    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
   }
