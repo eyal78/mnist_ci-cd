@@ -12,7 +12,6 @@ pipeline {
       when { branch "main" }
       steps {
           sh '''
-          cd webmaster
           echo building
           '''
       }
