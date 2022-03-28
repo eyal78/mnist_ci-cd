@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com/devops_groups_nde_ecr'
+    REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com/mnist-predictor'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
   }
@@ -31,7 +31,7 @@ pipeline {
         when { branch "main" }
         steps {
             sh '''
-            IMAGE="mnist-predictor:0.0.1"
+            IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
             cd ml_model
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${REGISTRY_URL}
             docker build -t ${IMAGE} .
