@@ -26,7 +26,16 @@ pipeline {
         when { branch "main" }
         steps {
             sh '''
-            echo deploying
+            cd infra/k8s
+            IMG_NAME=mnist-webserver:0.0.${BUILD_NUMBER}
+            # replace registry url and image name placeholders in yaml
+            sed -i "s/{{REGISTRY_URL}}/$REGISTRY_URL/g" mnist-webserver.yaml
+            sed -i "s/{{K8S_NAMESPACE}}/$K8S_NAMESPACE/g" mnist-webserver.yaml
+            sed -i "s/{{IMG_NAME}}/$IMG_NAME/g" mnist-webserver.yaml
+            # get kubeconfig creds (k8s auth)
+            aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
+            # apply to your namespace
+            kubectl apply -f mnist-webserver.yaml -n $K8S_NAMESPACE
             '''
         }
     }
