@@ -9,7 +9,7 @@ pipeline {
 
   stages {
     stage('MNIST Web Server - build'){
-      when { branch "main" }
+      when { branch "noams" }
       steps {
           sh '''
             IMAGE="mnist-webserver:0.0.${BUILD_NUMBER}"
@@ -23,7 +23,7 @@ pipeline {
     }
 
     stage('MNIST Web Server - deploy'){
-        when { branch "main" }
+        when { branch "noams" }
         steps {
             sh '''
             cd infra/k8s
@@ -38,11 +38,16 @@ pipeline {
             kubectl apply -f mnist-webserver.yaml -n $K8S_NAMESPACE
             '''
         }
+        post {
+                always {
+                    jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
+                }
+}
     }
 
 
     stage('MNIST Predictor - build'){
-        when { branch "main" }
+        when { branch "noams" }
         steps {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -56,7 +61,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - deploy'){
-        when { branch "main" }
+        when { branch "noams" }
         steps {
             sh '''
             cd infra/k8s
