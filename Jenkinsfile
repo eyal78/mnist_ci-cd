@@ -104,7 +104,7 @@ pipeline {
             # get kubeconfig creds (k8s auth)
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
             # apply to your namespace
-            kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
+            kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE1
             '''
         }
         post {
