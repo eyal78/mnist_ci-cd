@@ -107,7 +107,7 @@ pipeline {
                 post {
          success {
                     echo 'MNIST Predictor Deploy was successful '
-                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                    emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Deployment successful!', to: 'nds597@walla.com', body: 'MNIST Predictor Deployment was successful!')
                 }
             failure {
                 echo 'MNIST Predictor Deploy failed'
