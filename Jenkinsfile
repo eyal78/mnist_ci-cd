@@ -8,7 +8,7 @@ pipeline {
   }
 
   stages {
-    stage('MNIST Web Server - build'){
+    stage('MNIST Web Server - Build'){
       when { branch "noams" }
       steps {
           sh '''
@@ -20,9 +20,19 @@ pipeline {
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
       }
+        post {
+         success {
+                    echo 'MNIST Web Server Build was successful '
+                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                }
+            failure {
+                echo 'MNIST Web Server Build failed'
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Build failed', to: 'nds597@walla.com', body: 'MNIST Web Server Build failed')
+        }
+      }
     }
 
-    stage('MNIST Web Server - deploy'){
+    stage('MNIST Web Server - Deploy'){
         when { branch "noams" }
         steps {
             sh '''
@@ -42,11 +52,19 @@ pipeline {
                 always {
                     jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
                 }
+                success {
+                    echo 'MNIST Web Server Deploy was successful '
+                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                }
+                failure {
+                    echo 'MNIST Web Server Deploy failed'
+                    emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Deploy failed', to: 'nds597@walla.com', body: 'MNIST Web Server Deploy failed')
+            }
 }
     }
 
 
-    stage('MNIST Predictor - build'){
+    stage('MNIST Predictor - Build'){
         when { branch "noams" }
         steps {
             sh '''
@@ -58,9 +76,19 @@ pipeline {
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
         }
+        post {
+         success {
+                    echo 'MNIST Predictor Build was successful '
+                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                }
+            failure {
+                echo 'MNIST Predictor Build failed'
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Build failed', to: 'nds597@walla.com', body: 'MNIST Predictor Build failed')
+        }
+      }
     }
 
-    stage('MNIST Predictor - deploy'){
+    stage('MNIST Predictor - Deploy'){
         when { branch "noams" }
         steps {
             sh '''
@@ -76,6 +104,16 @@ pipeline {
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
             '''
         }
+                post {
+         success {
+                    echo 'MNIST Predictor Deploy was successful '
+                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                }
+            failure {
+                echo 'MNIST Predictor Deploy failed'
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy failed', to: 'nds597@walla.com', body: 'MNIST Predictor Deploy failed')
+        }
+      }
     }
   }
 }
