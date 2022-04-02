@@ -5,6 +5,8 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
+    def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
+    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
   }
 
   stages {
