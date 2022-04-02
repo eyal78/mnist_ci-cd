@@ -11,7 +11,7 @@ pipeline {
 
   stages {
     stage('MNIST Web Server - Build'){
-      when { branch "noams" }
+      when { anyOf {branch "main";branch "noams"} }
       steps {
           sh '''
             IMAGE="mnist-webserver:0.0.${BUILD_NUMBER}"
@@ -35,7 +35,7 @@ pipeline {
     }
 
     stage('MNIST Web Server - Deploy'){
-        when { branch "noams" }
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             cd infra/k8s
@@ -67,7 +67,7 @@ pipeline {
 
 
     stage('MNIST Predictor - Build'){
-        when { branch "noams" }
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -91,7 +91,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - Deploy'){
-        when { branch "noams" }
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             cd infra/k8s
