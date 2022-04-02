@@ -7,7 +7,7 @@ pipeline {
     K8S_NAMESPACE = 'devops-groups-nde'
     def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
-    email_recipients = "nds597@walla.com; noamstrauss@gmail.com"
+    email_recipients = nds597@walla.com; noamstrauss@gmail.com
   }
 
   stages {
