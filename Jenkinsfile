@@ -114,7 +114,7 @@ pipeline {
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy failed', to: email_recipients, body: 'MNIST Predictor Deploy failed')
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy failed', to: 'nds597@walla.com', recipientProviders: email_recipients ,body: 'MNIST Predictor Deploy failed')
         }
       }
     }
