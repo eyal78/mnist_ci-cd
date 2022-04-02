@@ -24,12 +24,12 @@ pipeline {
       }
         post {
          success {
-                    echo 'MNIST Web Server Build was successful '
-                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+            echo 'MNIST Web Server Build was successful '
+            /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
                 }
-            failure {
-                echo 'MNIST Web Server Build failed'
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Build failed', to: 'nds597@walla.com', body: 'MNIST Web Server Build failed')
+         failure {
+            echo 'MNIST Web Server Build failed'
+            emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Build failed', to: 'nds597@walla.com', body: 'MNIST Web Server Build failed')
         }
       }
     }
@@ -51,17 +51,17 @@ pipeline {
             '''
         }
         post {
-                always {
-                    jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
-                }
-                success {
-                    echo 'MNIST Web Server Deploy was successful '
-                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
-                }
-                failure {
-                    echo 'MNIST Web Server Deploy failed'
-                    emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Deploy failed', to: 'nds597@walla.com', body: 'MNIST Web Server Deploy failed')
+            always {
+                jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
             }
+            success {
+                echo 'MNIST Web Server Deploy was successful '
+                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+            }
+            failure {
+                echo 'MNIST Web Server Deploy failed'
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Deploy failed', to: 'nds597@walla.com', body: 'MNIST Web Server Deploy failed')
+        }
 }
     }
 
@@ -79,11 +79,11 @@ pipeline {
             '''
         }
         post {
-         success {
-                    echo 'MNIST Predictor Build was successful '
-                    /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
-                }
-            failure {
+             success {
+                echo 'MNIST Predictor Build was successful '
+                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                    }
+             failure {
                 echo 'MNIST Predictor Build failed'
                 emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Build failed', to: 'nds597@walla.com', body: 'MNIST Predictor Build failed')
         }
@@ -106,11 +106,11 @@ pipeline {
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
             '''
         }
-                post {
-         success {
-                    echo 'MNIST Predictor Deploy was successful '
-                    emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Deployment successful!', to: 'nds597@walla.com', body: 'MNIST Predictor Deployment was successful!')
-                }
+        post {
+            success {
+                echo 'MNIST Predictor Deploy was successful '
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Deployment successful!', to: 'nds597@walla.com', body: 'MNIST Predictor Deployment was successful!')
+                    }
             failure {
                 echo 'MNIST Predictor Deploy failed'
                 emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy failed', to: 'nds597@walla.com', body: 'MNIST Predictor Deploy failed')
