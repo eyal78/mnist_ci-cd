@@ -7,7 +7,7 @@ pipeline {
     K8S_NAMESPACE = 'devops-groups-nde'
     def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
-    email_recipients = nds597@walla.com; noamstrauss@gmail.com
+    email_recipients = "nds597@walla.com; noamstrauss@gmail.com"
   }
 
   stages {
@@ -110,7 +110,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Deployment successful!', to: 'nds597@walla.com', body: 'MNIST Predictor Deployment was successful!')
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Deployment successful!', to: email_recipients, body: 'MNIST Predictor Deployment was successful!')
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
