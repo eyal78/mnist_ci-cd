@@ -104,13 +104,13 @@ pipeline {
             # get kubeconfig creds (k8s auth)
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
             # apply to your namespace
-            kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE1
+            kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
             '''
         }
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy was successful')
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Deploy was successful', to: $DEFAULT_RECIPIENTS , body: 'MNIST Predictor Deploy was successful')
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
