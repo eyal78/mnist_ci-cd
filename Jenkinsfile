@@ -7,7 +7,7 @@ pipeline {
     K8S_NAMESPACE = 'devops-groups-nde'
     def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
-    email_recipients = "nds597@walla.com; noamstrauss@gmail.com"
+    email_recipients = "nds597@walla.com; "
   }
 
   stages {
@@ -26,11 +26,11 @@ pipeline {
         post {
          success {
             echo 'MNIST Web Server Build was successful '
-            /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+            /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: email_recipients, body: 'Test Passed')*/
                 }
          failure {
             echo 'MNIST Web Server Build failed'
-            emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Build failed', to: 'nds597@walla.com', body: 'MNIST Web Server Build failed')
+            emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Build failed', to: email_recipients, body: 'MNIST Web Server Build failed')
         }
       }
     }
@@ -57,11 +57,11 @@ pipeline {
             }
             success {
                 echo 'MNIST Web Server Deploy was successful '
-                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: email_recipients, body: 'Test Passed')*/
             }
             failure {
                 echo 'MNIST Web Server Deploy failed'
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Deploy failed', to: 'nds597@walla.com', body: 'MNIST Web Server Deploy failed')
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Web Server Deploy failed', to: email_recipients, body: 'MNIST Web Server Deploy failed')
         }
 }
     }
@@ -82,11 +82,11 @@ pipeline {
         post {
              success {
                 echo 'MNIST Predictor Build was successful '
-                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: 'nds597@walla.com', body: 'Test Passed')*/
+                /*emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'Test Results', to: email_recipients, body: 'Test Passed')*/
                     }
              failure {
                 echo 'MNIST Predictor Build failed'
-                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Build failed', to: 'nds597@walla.com', body: 'MNIST Predictor Build failed')
+                emailext(mimeType: 'text/html', replyTo: 'nds597@walla.com', subject: emailSubject+'MNIST Predictor Build failed', to: email_recipients, body: 'MNIST Predictor Build failed')
         }
       }
     }
