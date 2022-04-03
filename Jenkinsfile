@@ -43,7 +43,8 @@ pipeline {
       when { branch "danielItzakian" }
       steps {
           sh '''
-          python3 safety check
+          pip install safety
+          safety check
           '''
       }
     }
