@@ -7,7 +7,20 @@ pipeline {
     K8S_NAMESPACE = 'devops-groups-nde'
   }
 
+
   stages {
+      stage('Run safety check'){
+      when { branch "danielItzakian" }
+      steps {
+          sh '''
+            cd webserver
+            safety check -r requirements.txt
+            cd ../ml_model
+            safety check -r requirements.txt
+          '''
+      }
+    }
+
     stage('MNIST Web Server - build'){
       when { branch "main" }
       steps {
