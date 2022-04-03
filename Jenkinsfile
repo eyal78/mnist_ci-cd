@@ -7,7 +7,7 @@ pipeline {
     K8S_NAMESPACE = 'devops-groups-nde'
   }
 
-   stages {
+  stages {
     stage('MNIST Web Server - build'){
       when { branch "main" }
       steps {
