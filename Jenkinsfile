@@ -8,16 +8,12 @@ pipeline {
   }
 
 
-
   stages {
       stage('Run safety check'){
       when { branch "danielItzakian" }
       steps {
           sh '''
-            cd webserver
-            safety check -r requirements.txt
-            cd ../ml_model
-            safety check -r requirements.txt
+            safety check
           '''
       }
     }
