@@ -43,7 +43,7 @@ pipeline {
       when { branch "danielItzakian" }
       steps {
           sh '''
-          safety check
+          python3 safety check
           '''
       }
     }
