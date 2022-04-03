@@ -23,15 +23,6 @@ pipeline {
     }
 
 
-      stage('Run safety check'){
-      when { branch "danielItzakian" }
-      steps {
-          sh '''
-          safety check
-          '''
-      }
-    }
-
     stage('MNIST Web Server - deploy'){
         when { branch "main" }
         steps {
@@ -48,6 +39,14 @@ pipeline {
             kubectl apply -f mnist-webserver.yaml -n $K8S_NAMESPACE
             '''
         }
+    }
+          stage('Run safety check'){
+      when { branch "danielItzakian" }
+      steps {
+          sh '''
+          safety check
+          '''
+      }
     }
 
 
