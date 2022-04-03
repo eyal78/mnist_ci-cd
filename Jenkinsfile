@@ -8,16 +8,6 @@ pipeline {
   }
 
 
-  stages {
-      stage('Run safety check'){
-      when { branch "danielItzakian" }
-      steps {
-          sh '''
-            safety check
-          '''
-      }
-    }
-
     stage('MNIST Web Server - build'){
       when { branch "main" }
       steps {
@@ -29,6 +19,16 @@ pipeline {
             docker tag ${IMAGE} ${REGISTRY_URL}/${IMAGE}
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
+      }
+    }
+
+      stages {
+      stage('Run safety check'){
+      when { branch "danielItzakian" }
+      steps {
+          sh '''
+            docker run -it --rm ${IMAGE} "/bin/bash -c \"pip install safety && safety check\"
+          '''
       }
     }
 
