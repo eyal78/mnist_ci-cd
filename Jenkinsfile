@@ -8,6 +8,7 @@ pipeline {
   }
 
 
+
   stages {
       stage('Run safety check'){
       when { branch "danielItzakian" }
