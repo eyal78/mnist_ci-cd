@@ -39,6 +39,15 @@ pipeline {
         }
     }
 
+    stage('Run safety check'){
+      when { branch "danielItzakian" }
+      steps {
+          sh '''
+          safety check
+          '''
+      }
+    }
+
 
 
     stage('MNIST Predictor - build'){
