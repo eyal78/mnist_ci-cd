@@ -27,7 +27,7 @@ pipeline {
       when { branch "danielItzakian" }
       steps {
           sh '''
-            docker run -it --rm ${IMAGE} "/bin/bash -c \"pip install safety && safety check\"
+          safety check
           '''
       }
     }
