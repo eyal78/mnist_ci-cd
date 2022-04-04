@@ -9,6 +9,7 @@ pipeline {
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
+  stages {
       stage('Create pip.conf file') {
         environment {
            PASSWORD= credentials('jfroge-pip')
@@ -21,7 +22,7 @@ pipeline {
         }
     }
 
-  stages {
+
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
       steps {
