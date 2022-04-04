@@ -11,10 +11,11 @@ pipeline {
   }
       stage('Create pip.conf file') {
         environment {
-           PASSWORD= ....
+           PASSWORD= credentials('jfroge-pip')
         }
         steps {
             sh '''
+            cd webserver
             sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
             '''
         }
