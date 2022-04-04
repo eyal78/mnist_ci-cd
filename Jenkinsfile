@@ -40,7 +40,6 @@ pipeline {
     }
 
     stage('Run safety check'){
-      when { branch "danielItzakian" }
       steps {
           sh '''
           /user/local/bin/safety check
