@@ -9,6 +9,16 @@ pipeline {
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
+      stage('Create pip.conf file') {
+        environment {
+           PASSWORD= ....
+        }
+        steps {
+            sh '''
+            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
+            '''
+        }
+    }
 
   stages {
     stage('MNIST Web Server - Build'){
