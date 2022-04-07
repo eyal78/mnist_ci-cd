@@ -3,11 +3,7 @@ WORKDIR /app
 COPY . .
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN pip install safety
 RUN pip install -r requirements.txt
 
 CMD ["python3", "live_mnist.py"]
-
-
-FROM python:3.6-slim
-RUN pip install --trusted-host pypi.python.org safety
-CMD ["python"]
