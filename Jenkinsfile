@@ -22,6 +22,16 @@ pipeline {
         }
     }
 
+    stage('Safety check'){
+      when { anyOf {branch "main";branch "danielItzakian"} }
+      steps {
+        sh '''
+        cd webserver
+        safety check -r requirements.txt
+        '''
+      }
+    }
+
 
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
