@@ -22,15 +22,6 @@ pipeline {
         }
     }
 
-    stage('Install Safety module'){
-      when { anyOf {branch "danielItzakian"} }
-      steps {
-        sh '''
-        pip install safety
-        '''
-      }
-    }
-
     stage('Safety check'){
       when { anyOf {branch "danielItzakian"} }
       steps {
