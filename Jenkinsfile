@@ -5,10 +5,26 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
-  }
+    def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
+    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
+  }
   stages {
-    stage('MNIST Web Server - build'){
+      stage('Create pip.conf file') {
+        environment {
+           PASSWORD= credentials('jfroge-pip')
+        }
+        steps {
+            sh '''
+            cd webserver
+            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
+            '''
+        }
+    }
+
+
+    stage('MNIST Web Server - Build'){
+      when { anyOf {branch "main";branch "noams"} }
       steps {
           sh '''
             IMAGE="mnist-webserver:0.0.${BUILD_NUMBER}"
@@ -19,10 +35,20 @@ pipeline {
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
       }
+        post {
+         success {
+            echo 'MNIST Web Server Build was successful '
+            /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+                }
+         failure {
+            echo 'MNIST Web Server Build failed'
+            emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Web Server Build failed')
+        }
+      }
     }
 
-
-    stage('MNIST Web Server - deploy'){
+    stage('MNIST Web Server - Deploy'){
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             cd infra/k8s
@@ -37,19 +63,24 @@ pipeline {
             kubectl apply -f mnist-webserver.yaml -n $K8S_NAMESPACE
             '''
         }
+        post {
+            always {
+                jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
+            }
+            success {
+                echo 'MNIST Web Server Deploy was successful '
+                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+            }
+            failure {
+                echo 'MNIST Web Server Deploy failed'
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Web Server Deploy failed')
+        }
+}
     }
 
-    stage('Run safety check'){
-      steps {
-          sh '''
-          /user/local/bin/safety check
-          '''
-      }
-    }
 
-
-
-    stage('MNIST Predictor - build'){
+    stage('MNIST Predictor - Build'){
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -60,9 +91,20 @@ pipeline {
             docker push ${REGISTRY_URL}/${IMAGE}
             '''
         }
+        post {
+             success {
+                echo 'MNIST Predictor Build was successful '
+                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+                    }
+             failure {
+                echo 'MNIST Predictor Build failed'
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Build failed')
+        }
+      }
     }
 
-    stage('MNIST Predictor - deploy'){
+    stage('MNIST Predictor - Deploy'){
+        when { anyOf {branch "main";branch "noams"} }
         steps {
             sh '''
             cd infra/k8s
@@ -77,6 +119,16 @@ pipeline {
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
             '''
         }
+        post {
+            success {
+                echo 'MNIST Predictor Deploy was successful '
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: 'MNIST Predictor Deploy was successful')
+                    }
+            failure {
+                echo 'MNIST Predictor Deploy failed'
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy failed')
+        }
+      }
     }
   }
 }
