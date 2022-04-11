@@ -26,7 +26,7 @@ pipeline {
       when { anyOf {branch "danielItzakian"} }
       steps {
         sh '''
-        pip install safety
+        pip3 install safety
         cd webserver
         safety check -r requirements.txt
         '''
