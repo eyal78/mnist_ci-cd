@@ -22,6 +22,17 @@ pipeline {
         }
     }
 
+    stage('Safety check'){
+      when { anyOf {branch "danielItzakian"} }
+      steps {
+        sh '''
+        pip install safety
+        cd webserver
+        safety check -r requirements.txt
+        '''
+      }
+    }
+
 
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
@@ -47,15 +58,7 @@ pipeline {
       }
     }
 
-        stage('Safety check'){
-      when { anyOf {branch "danielItzakian"} }
-      steps {
-        sh '''
-        cd webserver
-        safety check -r requirements.txt
-        '''
-      }
-    }
+
 
     stage('MNIST Web Server - Deploy'){
         when { anyOf {branch "main";branch "noams"} }
