@@ -31,7 +31,7 @@ pipeline {
         '''
         sh '''
         cd webserver
-        ~/.local/bin/safety check -r requirements.txt
+        ~/.local/bin/safety check
         '''
       }
     }
