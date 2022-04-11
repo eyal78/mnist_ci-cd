@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 	git
 RUN pip install safety
 RUN pip install safety-db
+RUN pip install insecure-package
 RUN pip install -r requirements.txt
 
 CMD ["python3", "app.py"]
