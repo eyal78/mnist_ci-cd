@@ -27,7 +27,7 @@ pipeline {
       steps {
         sh '''
         pip3 install safety
-        pip3 install insecure-package
+        #pip3 install insecure-package
         '''
         sh '''
         cd webserver
