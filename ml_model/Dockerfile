@@ -4,10 +4,12 @@ COPY . .
 USER root
 RUN apt-get update && apt-get install -y \
 	python-pip \
-	git
+	git \
 RUN apt-get update
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN pip install pypi
 RUN pip install safety
+RUN pip install safety-db
+RUN pip install insecure-package
 RUN pip install -r requirements.txt
 
 CMD ["python3", "live_mnist.py"]

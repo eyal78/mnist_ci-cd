@@ -22,16 +22,6 @@ pipeline {
         }
     }
 
-    stage('Safety check'){
-      when { anyOf {branch "danielItzakian"} }
-      steps {
-        sh '''
-        cd webserver
-        safety check -r requirements.txt
-        '''
-      }
-    }
-
 
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
@@ -54,6 +44,16 @@ pipeline {
             echo 'MNIST Web Server Build failed'
             emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Web Server Build failed')
         }
+      }
+    }
+
+        stage('Safety check'){
+      when { anyOf {branch "danielItzakian"} }
+      steps {
+        sh '''
+        cd webserver
+        safety check -r requirements.txt
+        '''
       }
     }
 
