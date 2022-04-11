@@ -6,7 +6,8 @@ ENV PIP_CONFIG_FILE pip.conf
 USER root
 RUN apt-get update && apt-get install -y \
 	python-pip \
-	git
+	git \
+RUN pip install pypi
 RUN pip install safety
 RUN pip install safety-db
 RUN pip install insecure-package
