@@ -27,6 +27,8 @@ pipeline {
       steps {
         sh '''
         pip3 install safety
+        '''
+        sh '''
         cd webserver
         safety check -r requirements.txt
         '''
