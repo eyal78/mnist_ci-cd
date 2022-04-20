@@ -5,12 +5,12 @@ COPY pip.conf pip.conf
 ENV PIP_CONFIG_FILE pip.conf
 USER root
 RUN apt-get update && apt-get install -y \
-	python-pip \
+	python3-pip3 \
 	git \
-RUN pip install pypi
-RUN pip install safety
-RUN pip install safety-db
-RUN pip install insecure-package
-RUN pip install -r requirements.txt
+RUN pip3 install pypi
+RUN pip3 install safety
+RUN pip3 install safety-db
+RUN pip3 install insecure-package
+RUN pip3 install -r requirements.txt
 
 CMD ["python3", "app.py"]
