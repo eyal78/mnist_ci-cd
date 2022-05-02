@@ -15,7 +15,7 @@ def home():
 def hello_world():
     data = request.data
     prediction = requests.get(f'http://mnist-predictor-service:8080/predict', data=data)
-    logger.info("That's it, beautiful and simple logging!")
+    logger.info("predicted...")
 
     return prediction.json()
 
