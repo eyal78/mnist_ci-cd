@@ -11,6 +11,18 @@ pipeline {
   }
 
   stages {
+    stage('Static Code Checking') {
+            steps {
+                script {
+                    sh 'find . -name \\*.py | xargs pylint -f parseable | tee pylint.log'
+                    recordIssues(
+                        tool: pyLint(pattern: 'pylint.log'),
+                        unstableTotalHigh: 100,
+                    )
+                }
+            }
+        }
+
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
       steps {
