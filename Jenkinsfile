@@ -22,6 +22,7 @@ pipeline {
         }
     }
 
+
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
       steps {
