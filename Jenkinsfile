@@ -22,18 +22,6 @@ pipeline {
         }
     }
 
-    stage('Safety check'){
-      when { anyOf {branch "danielItzakian"} }
-      steps {
-        sh '''
-        pip3 install safety
-        '''
-        sh '''
-        cd webserver
-        ~/.local/bin/safety check
-        '''
-      }
-    }
 
 
     stage('MNIST Web Server - Build'){

@@ -4,9 +4,10 @@ COPY . .
 COPY pip.conf pip.conf
 ENV PIP_CONFIG_FILE pip.conf
 USER root
-RUN apt-get update && apt-get install -y \
-	python3 \
-	git \
+RUN apt-get update
+RUN apt-get install -y
+RUN python3
+RUN	git
 RUN pip3 install pypi
 RUN pip3 install safety
 RUN pip3 install safety-db
