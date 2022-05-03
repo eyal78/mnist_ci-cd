@@ -9,6 +9,7 @@ pipeline {
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
+  stages {
     stage('Static Code Checking') {
                 steps {
                     script {
