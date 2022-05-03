@@ -9,18 +9,20 @@ pipeline {
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
-  stages {
-      stage('Create pip.conf file') {
-        environment {
-           PASSWORD= credentials('jfroge-pip')
-        }
-        steps {
-            sh '''
-            cd webserver
-            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
-            '''
-        }
-    }
+    stage('Static Code Checking') {
+                steps {
+                    script {
+                        sh '''
+                        pip3 install pylint
+                        'find . -name \\*.py | xargs pylint --load-plugins=pylint_django -f parseable | tee pylint.log'
+                        recordIssues(
+                            tool: pyLint(pattern: 'pylint.log'),
+                            failTotalHigh: 10,
+                            '''
+                        )
+                    }
+                }
+            }
 
 
 
