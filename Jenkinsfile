@@ -15,11 +15,9 @@ pipeline {
         steps {
             script {
                 sh '''
+                cd webserver
                 pip3 install pylint
-                'find . -name \\*.py | xargs pylint --load-plugins=pylint_django -f parseable | tee pylint.log'
-                recordIssues(
-                    tool: pyLint(pattern: 'pylint.log'),
-                    failTotalHigh: 10,
+                pylint app.py
                     '''
                 )
             }
