@@ -3,9 +3,6 @@ WORKDIR /app
 COPY . .
 USER root
 RUN apt-get update
-RUN apt-get install -y
-RUN	python3
-RUN	git
 RUN pip3 install pypi
 RUN pip3 install safety
 RUN pip3 install safety-db
