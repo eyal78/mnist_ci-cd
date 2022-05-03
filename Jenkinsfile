@@ -10,17 +10,15 @@ pipeline {
 
   }
   stages {
-    stage('Static Code Checking') {
-      when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
+      stage('Create pip.conf file') {
+        environment {
+           PASSWORD= credentials('jfroge-pip')
+        }
         steps {
-            script {
-                sh '''
-                cd webserver
-                pip3 install pylint
-                pylint app.py
-                    '''
-                )
-            }
+            sh '''
+            cd webserver
+            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
+            '''
         }
     }
 
@@ -49,6 +47,8 @@ pipeline {
         }
       }
     }
+
+
 
     stage('MNIST Web Server - Deploy'){
         when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
