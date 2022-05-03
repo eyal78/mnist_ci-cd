@@ -11,17 +11,19 @@ pipeline {
   }
 
   stages {
-    stage('Static Code Checking') {
-            steps {
-                script {
-                    sh 'find . -name \\*.py | xargs pylint -f parseable | tee pylint.log'
-                    recordIssues(
-                        tool: pyLint(pattern: 'pylint.log'),
-                        unstableTotalHigh: 100,
-                    )
-                }
-            }
-        }
+    stage('lint'){
+       steps {
+        sh "virtualenv --python=/usr/bin/python venv"
+        sh "export TERM='linux'"
+        sh 'pylint --rcfile=pylint.cfg funniest/ $(find . -maxdepth 1 -name "*.py" -print) --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" > pylint.log || echo "pylint exited with $?"'
+        sh "rm -r venv/"
+
+        echo "linting Success, Generating Report"
+
+        warnings canComputeNew: false, canResolveRelativePaths: false, defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', parserConfigurations: [[parserName: 'PyLint', pattern: '*']], unHealthy: ''
+
+       }
+     }
 
     stage('MNIST Web Server - Build'){
       when { anyOf {branch "main";branch "noams"} }
