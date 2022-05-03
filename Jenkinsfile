@@ -13,18 +13,9 @@ pipeline {
   stages {
     stage('lint'){
        steps {
-        sh 'python3 -m pylint --disable=W1202 --output-format=parseable --reports=no module > pylint.log || echo "pylint exited with $?")'
-        sh 'cat render/pylint.log'
-
-        step([
-                $class                     : 'WarningsPublisher',
-                parserConfigurations       : [[
-                                                      parserName: 'PYLint',
-                                                      pattern   : 'pylint.log'
-                                              ]],
-                unstableTotalAll           : '0',
-                usePreviousBuildAsReference: true
-        ])
+        sh 'python3 -m pylint --output-format=parseable --fail-under=<threshold value> module --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" | tee pylint.log || echo "pylint exited with $?"'
+        echo "linting Success, Generating Report"
+        recordIssues enabledForFailure: true, aggregatingResults: true, tool: pyLint(pattern: 'pylint.log')
        }
      }
 
