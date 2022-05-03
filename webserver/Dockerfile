@@ -1,8 +1,6 @@
 FROM python:3.8.12-slim-buster
 WORKDIR /app
 COPY . .
-COPY pip.conf pip.conf
-ENV PIP_CONFIG_FILE pip.conf
 USER root
 RUN apt-get update
 RUN apt-get install -y
