@@ -12,5 +12,6 @@ RUN pip3 install pypi
 RUN pip3 install safety
 RUN pip3 install safety-db
 RUN pip3 install -r requirements.txt
+RUN safety check
 
 CMD ["python3", "app.py"]
