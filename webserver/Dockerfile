@@ -5,7 +5,7 @@ COPY pip.conf pip.conf
 ENV PIP_CONFIG_FILE pip.conf
 USER root
 RUN apt-get update && apt-get install -y \
-	python3-pip3 \
+	python3 \
 	git \
 RUN pip3 install pypi
 RUN pip3 install safety

@@ -2,9 +2,10 @@ FROM python:3.8.12-slim-buster
 WORKDIR /app
 COPY . .
 USER root
-RUN apt-get update && apt-get install -y \
-	python3-pip3 \
-	git \
+RUN apt-get update
+RUN apt-get install -y
+RUN	python3
+RUN	git
 RUN apt-get update
 RUN pip3 install pypi
 RUN pip3 install safety
