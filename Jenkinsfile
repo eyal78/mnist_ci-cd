@@ -11,19 +11,20 @@ pipeline {
   }
   stages {
     stage('Static Code Checking') {
-                steps {
-                    script {
-                        sh '''
-                        pip3 install pylint
-                        'find . -name \\*.py | xargs pylint --load-plugins=pylint_django -f parseable | tee pylint.log'
-                        recordIssues(
-                            tool: pyLint(pattern: 'pylint.log'),
-                            failTotalHigh: 10,
-                            '''
-                        )
-                    }
-                }
+      when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
+        steps {
+            script {
+                sh '''
+                pip3 install pylint
+                'find . -name \\*.py | xargs pylint --load-plugins=pylint_django -f parseable | tee pylint.log'
+                recordIssues(
+                    tool: pyLint(pattern: 'pylint.log'),
+                    failTotalHigh: 10,
+                    '''
+                )
             }
+        }
+    }
 
 
 
