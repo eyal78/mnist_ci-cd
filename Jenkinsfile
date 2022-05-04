@@ -10,17 +10,7 @@ pipeline {
 
   }
   stages {
-      stage('Create pip.conf file') {
-        environment {
-           PASSWORD= credentials('jfroge-pip')
-        }
-        steps {
-            sh '''
-            cd webserver
-            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
-            '''
-        }
-    }
+
 
 
     stage('MNIST Web Server - Build'){
