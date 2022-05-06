@@ -123,6 +123,7 @@ pipeline {
     stage('MNIST Grafana Dashboard - Deploy'){
     steps {
         sh '''
+        cd infra/k8s
         aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
         kubectl apply -f grafana-dashboard.yaml
         '''
