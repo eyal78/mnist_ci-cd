@@ -119,5 +119,20 @@ pipeline {
         }
       }
     }
+
+    stage('MNIST Grafana Dashboard - Deploy'){
+    steps {
+        sh '''
+        aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
+        kubectl apply -f grafana-dashboard.yaml
+        '''
+    }
+    post {
+        failure {
+            echo 'MNIST Grafana Dashboard Deploy failed'
+            emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy failed')
+        }
+      }
+    }
   }
 }
