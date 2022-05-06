@@ -45,7 +45,7 @@ data:
                "mode": "absolute",
                "steps": [
                  {
-                   "color": "green",
+                   "color": "purple",
                    "value": null
                  },
                  {
