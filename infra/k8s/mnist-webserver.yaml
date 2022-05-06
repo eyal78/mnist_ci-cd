@@ -19,8 +19,6 @@ spec:
       containers:
         - name: mnist-webserver
           image: {{REGISTRY_URL}}/{{IMG_NAME}}
-          imagePullPolicy: Always
-
 ---
 apiVersion: v1
 kind: Service
