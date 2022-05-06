@@ -9,18 +9,9 @@ pipeline {
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
-
   stages {
-    stage('lint'){
-       steps {
-        sh 'python3 -m pylint --output-format=parseable --fail-under=<threshold value> module --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" | tee pylint.log || echo "pylint exited with $?"'
-        echo "linting Success, Generating Report"
-        recordIssues enabledForFailure: true, aggregatingResults: true, tool: pyLint(pattern: 'pylint.log')
-       }
-     }
-
-    stage('MNIST Web Server - Build'){
-      when { anyOf {branch "main";branch "noams"} }
+    stage('MNIST Web Server - Build '){
+      when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
       steps {
           sh '''
             IMAGE="mnist-webserver:0.0.${BUILD_NUMBER}"
@@ -43,8 +34,10 @@ pipeline {
       }
     }
 
+
+
     stage('MNIST Web Server - Deploy'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             cd infra/k8s
@@ -76,7 +69,7 @@ pipeline {
 
 
     stage('MNIST Predictor - Build'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -100,7 +93,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - Deploy'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             cd infra/k8s
