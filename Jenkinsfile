@@ -5,7 +5,7 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
-    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at:"
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
@@ -111,7 +111,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: "More info at: ${env.BUILD_URL}" )
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailBody )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
