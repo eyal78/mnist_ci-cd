@@ -3,6 +3,7 @@ WORKDIR /app
 COPY . .
 USER root
 RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip3 install pypi
 RUN pip3 install safety
 RUN pip3 install safety-db
