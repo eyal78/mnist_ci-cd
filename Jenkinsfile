@@ -111,7 +111,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailSubject+'onlystring' )
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailSubject )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
@@ -134,6 +134,21 @@ pipeline {
             emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy failed')
         }
       }
+    }
+    stage('Cleanup local images') {
+
+    steps {
+      echo '=== Cleaning local image ==='
+        script{
+        sh '''
+        echo '=== Delete the local docker images ==='
+        final="${REGISTRY}/${IMG}"
+        docker rmi -f $final
+        docker system prune -f
+        echo 'Removed local image Successfully'
+            '''
+            }
+        }
     }
   }
 }
