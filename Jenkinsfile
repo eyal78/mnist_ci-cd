@@ -5,7 +5,7 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
-    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at:${env.BUILD_URL}"
+    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at:${env.JOB_URL}"
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
@@ -106,7 +106,6 @@ pipeline {
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
-            printenv
             '''
         }
         post {
