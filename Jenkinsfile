@@ -10,21 +10,10 @@ pipeline {
 
   }
   stages {
-      stage('Create pip.conf file') {
-        environment {
-           PASSWORD= credentials('jfroge-pip')
-        }
-        steps {
-            sh '''
-            cd webserver
-            sed -i "s/<PASSWORD>/$PASSWORD/g" pip.conf
-            '''
-        }
-    }
 
 
     stage('MNIST Web Server - Build'){
-      when { anyOf {branch "main";branch "noams"} }
+      when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
       steps {
           sh '''
             IMAGE="mnist-webserver:0.0.${BUILD_NUMBER}"
@@ -47,8 +36,10 @@ pipeline {
       }
     }
 
+
+
     stage('MNIST Web Server - Deploy'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             cd infra/k8s
@@ -80,7 +71,7 @@ pipeline {
 
 
     stage('MNIST Predictor - Build'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             IMAGE="mnist-predictor:0.0.${BUILD_NUMBER}"
@@ -104,7 +95,7 @@ pipeline {
     }
 
     stage('MNIST Predictor - Deploy'){
-        when { anyOf {branch "main";branch "noams"} }
+        when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
             sh '''
             cd infra/k8s
