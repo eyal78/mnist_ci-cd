@@ -11,3 +11,4 @@ RUN safety check
 #RUN pip3 freeze | safety check --stdin
 
 CMD ["python3", "app.py"]
+
