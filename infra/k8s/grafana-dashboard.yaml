@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mnist-dashboard
+  namespace: devops-groups-nde
+  labels:
+    grafana_dashboard: "true"
+data:
+ mnist.json: |
+   {
+     "annotations": {
+       "list": [
+         {
+           "builtIn": 1,
+           "datasource": "-- Grafana --",
+           "enable": true,
+           "hide": true,
+           "iconColor": "rgba(0, 211, 255, 1)",
+           "name": "Annotations & Alerts",
+           "target": {
+             "limit": 100,
+             "matchAny": false,
+             "tags": [],
+             "type": "dashboard"
+           },
+           "type": "dashboard"
+         }
+       ]
+     },
+     "editable": true,
+     "fiscalYearStartMonth": 0,
+     "graphTooltip": 0,
+     "id": 2,
+     "links": [],
+     "liveNow": false,
+     "panels": [
+       {
+         "fieldConfig": {
+           "defaults": {
+             "color": {
+               "mode": "thresholds"
+             },
+             "mappings": [],
+             "thresholds": {
+               "mode": "absolute",
+               "steps": [
+                 {
+                   "color": "green",
+                   "value": null
+                 },
+                 {
+                   "color": "red",
+                   "value": 80
+                 }
+               ]
+             }
+           },
+           "overrides": []
+         },
+         "gridPos": {
+           "h": 9,
+           "w": 12,
+           "x": 0,
+           "y": 0
+         },
+         "id": 2,
+         "options": {
+           "orientation": "auto",
+           "reduceOptions": {
+             "calcs": [
+               "sum"
+             ],
+             "fields": "",
+             "values": false
+           },
+           "showThresholdLabels": false,
+           "showThresholdMarkers": true
+         },
+         "pluginVersion": "8.4.2",
+         "targets": [
+           {
+             "alias": "",
+             "bucketAggs": [
+               {
+                 "field": "@timestamp",
+                 "id": "2",
+                 "settings": {
+                   "interval": "auto"
+                 },
+                 "type": "date_histogram"
+               }
+             ],
+             "datasource": {
+               "type": "elasticsearch",
+               "uid": "PAE1B8C8635429669"
+             },
+             "metrics": [
+               {
+                 "id": "1",
+                 "type": "count"
+               }
+             ],
+             "query": "\nlog:predicted\n\n",
+             "refId": "A",
+             "timeField": "@timestamp"
+           }
+         ],
+         "title": "Total number of predictions",
+         "type": "gauge"
+       }
+     ],
+     "refresh": "",
+     "schemaVersion": 35,
+     "style": "dark",
+     "tags": [],
+     "templating": {
+       "list": []
+     },
+     "time": {
+       "from": "now-1h",
+       "to": "now"
+     },
+     "timepicker": {},
+     "timezone": "",
+     "title": "mnist predictor",
+     "uid": "1nDxs7lnk",
+     "version": 1,
+     "weekStart": ""
+   }
+             "metrics": [
+               {
+                 "id": "1",
+                 "type": "count"
+               }
+             ],
+             "query": "log:predicted\n\n",
+             "refId": "A",
+             "timeField": "@timestamp"
+           }
+         ],
+         "title": "Total number of predictions",
+         "type": "gauge"
+       }
+     ],
+     "refresh": "",
+     "schemaVersion": 35,
+     "style": "dark",
+     "tags": [],
+     "templating": {
+       "list": []
+     },
+     "time": {
+       "from": "now-1h",
+       "to": "now"
+     },
+     "timepicker": {},
+     "timezone": "",
+     "title": "mnist predictor",
+     "uid": "1nDxs7lnk",
+     "version": 2,
+     "weekStart": ""
+   }
