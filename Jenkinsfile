@@ -6,7 +6,7 @@ pipeline {
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
     def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
-    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
+    def emailSubject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
 
   }
   stages {
@@ -111,7 +111,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", )
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailSubject )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
