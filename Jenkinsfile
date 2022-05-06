@@ -106,6 +106,7 @@ pipeline {
             aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
             # apply to your namespace
             kubectl apply -f mnist-predictor.yaml -n $K8S_NAMESPACE
+            printenv
             '''
         }
         post {
