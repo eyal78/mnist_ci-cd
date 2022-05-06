@@ -12,7 +12,7 @@ pipeline {
   stages {
 
 
-    stage('MNIST Web Server - Build'){
+    stage('MNIST Web Server - Build '){
       when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
       steps {
           sh '''
