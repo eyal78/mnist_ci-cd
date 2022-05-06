@@ -6,7 +6,7 @@ pipeline {
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
     def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
-    def emailSubject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+    def emailSubject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
 
   }
   stages {
