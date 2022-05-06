@@ -111,7 +111,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: "Job ${env.JOB_NAME}" )
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}" )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
