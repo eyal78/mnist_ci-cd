@@ -19,6 +19,7 @@ spec:
       containers:
         - name: mnist-predictor
           image: {{REGISTRY_URL}}/{{IMG_NAME}}
+          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
