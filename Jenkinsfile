@@ -5,8 +5,8 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
-    def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
-    def emailSubject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+    def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
   stages {
@@ -111,7 +111,7 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailSubject )
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailBody+ '' )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
@@ -120,7 +120,7 @@ pipeline {
       }
     }
 
-    stage('MNIST Grafana Dashboard - Deploy' ){
+    stage('MNIST Grafana Dashboard - Deploy'){
     steps {
         sh '''
         cd infra/k8s
