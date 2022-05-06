@@ -37,7 +37,6 @@ pipeline {
     }
 
 
-
     stage('MNIST Web Server - Deploy'){
         when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
@@ -120,6 +119,22 @@ pipeline {
                 emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy failed')
         }
       }
+    }
+
+    stage('Cleanup local images') {
+
+    steps {
+      echo '=== Cleaning local image ==='
+        script{
+        sh '''
+        echo '=== Delete the local docker images ==='
+        final="${REGISTRY}/${IMG}"
+        docker rmi -f $final
+        docker system prune -f
+        echo 'Removed local image Successfully'
+            '''
+            }
+        }
     }
   }
 }
