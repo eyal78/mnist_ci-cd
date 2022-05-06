@@ -82,7 +82,7 @@ pipeline {
         }
         post {
              success {
-                echo 'MNIST Predictor Build was successful '
+                echo 'MNIST Predictor Build was successful'
                 /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
                     }
              failure {
