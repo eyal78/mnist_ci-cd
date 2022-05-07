@@ -1,8 +1,6 @@
 import requests
 from loguru import logger
-
 from flask import Flask, send_file, request, render_template
-
 app = Flask(__name__, static_url_path='')
 
 
@@ -13,6 +11,7 @@ def home():
 
 @app.route("/upload", methods=['POST'])
 def hello_world():
+    logger.add(sys.stderr, level="DEBUG")
     data = request.data
     prediction = requests.get(f'http://mnist-predictor-service:8080/predict', data=data)
     logger.info("predicted!")
