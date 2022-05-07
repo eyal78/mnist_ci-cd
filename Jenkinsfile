@@ -5,13 +5,11 @@ pipeline {
     REGISTRY_URL = '352708296901.dkr.ecr.eu-north-1.amazonaws.com'
     ECR_REGION = 'eu-north-1'
     K8S_NAMESPACE = 'devops-groups-nde'
-    def emailBody = '${JELLY_SCRIPT,template="html_gmail"}'
+    def emailBody = "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n"
     def emailSubject = "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER}"
 
   }
   stages {
-
-
     stage('MNIST Web Server - Build '){
       when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
       steps {
@@ -27,11 +25,11 @@ pipeline {
         post {
          success {
             echo 'MNIST Web Server Build was successful '
-            /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+            /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody*/
                 }
          failure {
             echo 'MNIST Web Server Build failed'
-            emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Web Server Build failed')
+            emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody+'MNIST Web Server Build failed')
         }
       }
     }
@@ -54,16 +52,16 @@ pipeline {
             '''
         }
         post {
-            always {
-                jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
-            }
+//            always {
+//                jiraSendDeploymentInfo environmentId: 'us-prod-1', environmentName: 'eu-north-1', environmentType: 'staging'
+//            }
             success {
                 echo 'MNIST Web Server Deploy was successful '
-                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody)*/
             }
             failure {
                 echo 'MNIST Web Server Deploy failed'
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Web Server Deploy failed')
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Web Server Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody+'MNIST Web Server Deploy failed')
         }
 }
     }
@@ -83,12 +81,12 @@ pipeline {
         }
         post {
              success {
-                echo 'MNIST Predictor Build was successful '
-                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'Test Passed')*/
+                echo 'MNIST Predictor Build was successful'
+                /*emailext(mimeType: 'text/html', subject: emailSubject+'Test Results', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody)*/
                     }
              failure {
                 echo 'MNIST Predictor Build failed'
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Build failed')
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Build failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody+'MNIST Predictor Build failed')
         }
       }
     }
@@ -112,17 +110,30 @@ pipeline {
         post {
             success {
                 echo 'MNIST Predictor Deploy was successful '
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: 'MNIST Predictor Deploy was successful')
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy was successful', recipientProviders: [[$class: 'DevelopersRecipientProvider']] , body: emailBody )
                     }
             failure {
                 echo 'MNIST Predictor Deploy failed'
-                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: 'MNIST Predictor Deploy failed')
+                emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody+'MNIST Predictor Deploy failed')
         }
       }
     }
-
+    stage('MNIST Grafana Dashboard - Deploy'){
+    steps {
+        sh '''
+        cd infra/k8s
+        aws eks --region eu-north-1 update-kubeconfig --name devops-apr21-k8s
+        kubectl apply -f grafana-dashboard.yaml
+        '''
+    }
+    post {
+        failure {
+            echo 'MNIST Grafana Dashboard Deploy failed'
+            emailext(mimeType: 'text/html', subject: emailSubject+' MNIST Predictor Deploy failed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], body: emailBody+'MNIST Predictor Deploy failed')
+        }
+      }
+    }
     stage('Cleanup local images') {
-
     steps {
       echo '=== Cleaning local image ==='
         script{
