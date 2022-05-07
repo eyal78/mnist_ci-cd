@@ -34,7 +34,6 @@ pipeline {
       }
     }
 
-
     stage('MNIST Web Server - Deploy'){
         when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
