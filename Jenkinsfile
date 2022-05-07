@@ -35,7 +35,6 @@ pipeline {
     }
 
 
-
     stage('MNIST Web Server - Deploy'){
         when { anyOf {branch "main";branch "noams";branch "danielItzakian"} }
         steps {
@@ -119,7 +118,6 @@ pipeline {
         }
       }
     }
-
     stage('MNIST Grafana Dashboard - Deploy'){
     steps {
         sh '''
@@ -136,7 +134,6 @@ pipeline {
       }
     }
     stage('Cleanup local images') {
-
     steps {
       echo '=== Cleaning local image ==='
         script{
