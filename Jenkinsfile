@@ -118,7 +118,7 @@ pipeline {
         }
       }
     }
-    stage('MNIST Grafana Dashboard - Deploy' ){
+    stage('MNIST Grafana Dashboard - Deploy'){
     steps {
         sh '''
         cd infra/k8s
