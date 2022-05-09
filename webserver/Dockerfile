@@ -9,6 +9,7 @@ RUN pip3 install safety-db
 RUN pip3 install -r requirements.txt
 RUN safety check
 RUN pip3 freeze
+RUN pip3 freeze | safety check –stdin
 
 CMD ["python3", "app.py"]
 
